@@ -2,17 +2,8 @@
 
 @section('content')
 <style>
-   body {
-        overflow: hidden;
-    }
    #editor {
         height: 500px;
-        margin: 0;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
     }
   </style>
 
@@ -29,6 +20,8 @@ public class Practice {
     
 }
 </pre>
+        <hr/>
+        <button class="btn btn-primary" id="submit">Submit &raquo;</button>
         </div>
     </div>
 </div>
@@ -43,5 +36,21 @@ public class Practice {
     document.getElementById('editor').style.fontSize='14px';
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/java");
+    $(function() {
+        $("#submit").click(function(){ 
+            $.ajax({
+                type: 'POST',
+                url: '{{action('HomeController@submit')}}',
+                data: {"_token": "{{ csrf_token() }}", 'code' : editor.getValue()},
+                dataType: 'json',
+                success: function(data) {
+                    if(data['message'] == 'success') {
+                         $("#message").fadeIn().addClass("alert alert-success").html("Successfully added interview slots.") ;
+                    }
+                }
+            });
+            event.preventDefault();
+        });
+    });
 </script>
 @stop
