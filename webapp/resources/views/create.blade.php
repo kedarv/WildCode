@@ -14,8 +14,25 @@
           </div>
           <div class="form-group">
             <label for="description">Challenge Description</label>
-            <textarea class="form-control" rows="2" name="description"></textarea>
+            <input type="text" name="description" class="form-control" id="description" placeholder="Challenge Description">
           </div>
+          <div class="form-group">
+            <label for="instructions">Challenge Instructions</label>
+            <textarea class="form-control" rows="2" name="instructions"></textarea>
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="difficulty">
+              <option value="1">Easy</option>
+              <option value="2">Moderate</option>
+              <option value="3">Difficult</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="prototype">Function prototype</label>
+            <input type="text" name="prototype" class="form-control" id="prototype" placeholder="concat(String text, String text2)">
+          </div>
+          <hr/>
+          <h4>Test Cases</h4>
           <div class="form-group" id="fields">
             <div class="row">
                 <div id="container1">
@@ -30,8 +47,6 @@
                   </div>
               </div>
             </div>
-           
-
         </div>
           <button type="submit" class="btn btn-default">Submit</button>
         </form> 

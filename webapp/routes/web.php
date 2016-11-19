@@ -10,14 +10,12 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/', 'HomeController@index');
+Route::get('/challenge/{id}', 'HomeController@challenge');
 Route::post('/submit', 'HomeController@submit');
 Route::get('/create', 'HomeController@create');
+Route::get('/view', 'HomeController@view');
 Route::post('/submitCreate', 'HomeController@submitCreate');
+Route::get('/challenge/solution/{id}', 'HomeController@challengeSolution');

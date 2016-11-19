@@ -11,7 +11,7 @@
     <title>{{ config('app.name') }}</title>
 
     <!-- Styles -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -37,7 +37,8 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if (!Auth::guest())
-                            <li><a href="#">Create Challenge</a></li>
+                            <li><a href="{{action('HomeController@create')}}">Create Challenge</a></li>
+                            <li><a href="{{action('HomeController@view')}}">View Challenges</a></li>
                         @endif
                     </ul>
 

@@ -18,8 +18,20 @@ app.get('/', function (req, res) {
 })
 
 app.post('/', function (req, res) {
-    console.log(req.body.code);
-	fs.writeFile("Practice.java", req.body.code, function(err) {
+    var main = "\npublic static void main(String args[]) {\n";
+    var expected_out = "";
+    var testcases = req.body.testcase;
+    testcases = testcases.split("#");
+    testcases.forEach(function(test) {
+        if(test.length != 0) {
+            var split = test.split("^");
+            main += "System.out.println(reverse(\""+ split[0] +"\"));";
+            expected_out += split[1] + "\n";
+        }
+    });
+    var imports = "import java.util.*;\nimport java.io.*;\npublic class Practice {\n";
+    main += "\n}\n}";
+	fs.writeFile("Practice.java", imports + req.body.code + main, function(err) {
 		if(err) {
 			return console.log(err);
 		}
@@ -33,8 +45,9 @@ app.post('/', function (req, res) {
             exec('java Practice', options, function(err,stdout,stderr) {
                 timer.stop();
                 console.log("took " + timer.ms + "ms");
-                var expected = fs.readFileSync('expected').toString();
-                if(stdout === expected) {
+                console.log(stdout);
+                console.log(expected_out);
+                if(stdout === expected_out) {
                     res.send("ok");
                 } else {
                 // console.log(stdout);
