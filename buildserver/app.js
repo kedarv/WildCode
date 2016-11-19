@@ -18,7 +18,7 @@ app.get('/', function (req, res) {
 })
 
 app.post('/', function (req, res) {
-    // console.log(req.body.code);
+    console.log(req.body.code);
 	fs.writeFile("Practice.java", req.body.code, function(err) {
 		if(err) {
 			return console.log(err);
@@ -29,6 +29,7 @@ app.post('/', function (req, res) {
     			return
   			}
             exec('java Practice', options, function(err,stdout,stderr) {
+                console.log(stdout);
                 res.send(stdout);
             });
         });

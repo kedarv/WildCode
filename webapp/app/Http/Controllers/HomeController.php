@@ -34,6 +34,7 @@ class HomeController extends Controller
                 'code' => $request->code
             ]
         ]);
-        return $r->getBody();
+        // echo $r->getBody();
+        return ['message' => 'success', 'output' => (String) $r->getBody()];
     }
 }
