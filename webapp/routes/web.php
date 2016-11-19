@@ -19,3 +19,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 Route::post('/submit', 'HomeController@submit');
+Route::get('/create', 'HomeController@create');
+Route::post('/submitCreate', 'HomeController@submitCreate');

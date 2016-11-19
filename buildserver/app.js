@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+var Stopwatch = require('timer-stopwatch');
 var exec = child_process.exec;
 var options = {
   timeout: 10000,
@@ -28,9 +28,19 @@ app.post('/', function (req, res) {
                 console.log('Child process exited with error code', err.code);
     			return
   			}
+            var timer = new Stopwatch();
+            timer.start();
             exec('java Practice', options, function(err,stdout,stderr) {
-                console.log(stdout);
+                timer.stop();
+                console.log("took " + timer.ms + "ms");
+                var expected = fs.readFileSync('expected').toString();
+                if(stdout === expected) {
+                    res.send("ok");
+                } else {
+                // console.log(stdout);
+                // console.log(expected);
                 res.send(stdout);
+                }
             });
         });
     }); 
