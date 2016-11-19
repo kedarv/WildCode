@@ -7,5 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "AGPL-3.0"
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "dotenv": "^2.0.0",
+    "superagent": "^2.3.0"
+  }
 }
