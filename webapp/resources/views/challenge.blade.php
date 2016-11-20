@@ -22,11 +22,8 @@
         </div>
     </div>
         <div class="col-md-9">
-        
-        <pre id="editor">public static {{$challenge->return_type}} {{$challenge->prototype}} {
-// Your code here
-}</pre>
-         
+        <pre id="editor">{{$challenge_data->code}}</pre>
+        <span id="saved"></span>
         <hr/>
         <button class="btn btn-primary" id="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Compiling">Submit &raquo;</button>
         </div>
@@ -59,13 +56,33 @@
         , Range    = require("ace/range").Range
         , range    = new Range(0, 0, 0, prototype)
         , markerId = session.addMarker(range, "readonly-highlight");
-
+    var timeout;
     editor.setHighlightActiveLine(false);
     editor.setShowPrintMargin(false);
     document.getElementById('editor').style.fontSize='14px';
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/java");
-
+    editor.getSession().on('change', function() {
+        clearTimeout(timeout);
+        console.log("changed");
+        timeout = setTimeout(function() {
+            saveToDB();
+        }, 1000);
+    });
+    function saveToDB() {
+    $("#saved").html('Saving...');
+    $.ajax({
+        type: 'POST',
+        url: '{{action('HomeController@commitCode')}}',
+        data: { "_token": "{{ csrf_token() }}", "challenge_id": {{$challenge->id}}, "code": editor.getValue()},
+        dataType: 'json',
+        success: function(data) {
+            if(data['message'] == 'success') {
+                 $("#saved").html('<abbr title="' + data['updated_at'] +'">Saved.</abbr>');
+            }
+        }
+    });
+}
  // session.setMode("ace/mode/javascript");
     editor.keyBinding.addKeyboardHandler({
         handleKeyboard : function(data, hash, keyString, keyCode, event) {

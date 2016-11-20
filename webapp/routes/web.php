@@ -18,4 +18,5 @@ Route::post('/submit', 'HomeController@submit');
 Route::get('/create', 'HomeController@create');
 Route::get('/view', 'HomeController@view');
 Route::post('/submitCreate', 'HomeController@submitCreate');
+Route::post('/commitCode', 'HomeController@commitCode');
 Route::get('/challenge/solution/{id}', 'HomeController@challengeSolution');

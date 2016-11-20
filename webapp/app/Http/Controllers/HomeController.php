@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Validator;
 use App\Challenge;
+use App\ChallengeData;
 use Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 class HomeController extends Controller
@@ -31,7 +32,17 @@ class HomeController extends Controller
     }
     public function challenge(Request $request) {
         $challenge = Challenge::find($request->id);
-        return view('challenge', compact('challenge'));
+        $challenge_data = ChallengeData::where('user_id', Auth::user()->id)->where('challenge_id', $challenge->id);
+        if($challenge_data->count() == 0) {
+            $data = new ChallengeData(['user_id' => Auth::user()->id, 'challenge_id' => $challenge->id]);
+            $data->code = "public static " . $challenge->return_type . " " . $challenge->prototype . " {
+// Your code here
+}";
+            $data->completed = 0;
+            $data->save();
+        }
+        $challenge_data = $challenge_data->first();
+        return view('challenge', compact('challenge', 'challenge_data'));
     }
     public function submit(Request $request) {
         $client = new Client;
@@ -63,6 +74,14 @@ class HomeController extends Controller
         // var_dump($challenges);
         return view('view', compact('challenges'));
     }
+    public function commitCode(Request $request) {
+        $data = ChallengeData::firstOrNew(['user_id' => Auth::user()->id, 'challenge_id' => $request->challenge_id]);
+        $data->code = $request->code;
+        $data->completed = 0;
+        $data->save();
+        return ['message' => 'success'];    
+    }
+
     public function submitCreate(Request $request) {
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',

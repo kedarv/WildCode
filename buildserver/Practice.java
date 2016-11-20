@@ -1,16 +1,21 @@
 import java.util.*;
 import java.io.*;
 public class Practice {
-public static int fibonacci(int n1) {
-    if (n1 == 1) {
-        return 0;
+public static boolean areAllCharactersUnique(String str) {
+    if(str == null)
+        return true;
+
+    HashMap<Character, Integer> map = new HashMap<>();
+    for(int i = 0; i < str.length(); i++) {
+        if(map.get(str.charAt(i)) != null) {
+            return false;
+        } else {
+            map.put(str.charAt(i), 1);
+        }
     }
-    if (n1 == 2) {
-        return 1;
-    }
-    return fibonacci(n1 - 1) + fibonacci(n1 - 2);
+    return true;
 }
 public static void main(String args[]) {
-System.out.println(fibonacci(1));System.out.println(fibonacci(2));System.out.println(fibonacci(6));
+System.out.println(areAllCharactersUnique("testing"));System.out.println(areAllCharactersUnique("hey"));System.out.println(areAllCharactersUnique("lol"));System.out.println(areAllCharactersUnique("nice"));
 }
 }
