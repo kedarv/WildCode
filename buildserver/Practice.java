@@ -1,21 +1,19 @@
 import java.util.*;
 import java.io.*;
 public class Practice {
-public static boolean areAllCharactersUnique(String str) {
-    if(str == null)
-        return true;
-
-    HashMap<Character, Integer> map = new HashMap<>();
-    for(int i = 0; i < str.length(); i++) {
-        if(map.get(str.charAt(i)) != null) {
-            return false;
-        } else {
-            map.put(str.charAt(i), 1);
+public static int[] bubbleSortArray(int[] arr) {
+for(int i = 0; i < arr.length; i++) {
+        for(int j = 0; j < arr.length; j++) {
+            if(arr[i] < arr[j]) {
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
         }
     }
-    return true;
+    return arr;
 }
 public static void main(String args[]) {
-System.out.println(areAllCharactersUnique("testing"));System.out.println(areAllCharactersUnique("hey"));System.out.println(areAllCharactersUnique("lol"));System.out.println(areAllCharactersUnique("nice"));
+System.out.println(Arrays.toString(bubbleSortArray(new int[]{1,5,2,4,3})));
 }
 }

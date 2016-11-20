@@ -32,7 +32,11 @@ app.post('/', function (req, res) {
                 innerargsString += innerarg +',';
             });
             innerargsString = innerargsString.slice(0, -1);
-            main += "System.out.println("+method+"("+innerargsString+"));";
+            if(req.body.return_type.includes("[]")) {
+                main += "System.out.println(Arrays.toString("+method+"("+innerargsString+")));";
+            } else {
+                main += "System.out.println("+method+"("+innerargsString+"));";
+            }
             expected_out += split[1] + "\n";
         }
     });

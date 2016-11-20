@@ -52,7 +52,8 @@ class HomeController extends Controller
             'form_params' => [
                 'code' => $request->code,
                 'testcase' => $challenge->tests,
-                'proto' => $challenge->prototype
+                'proto' => $challenge->prototype,
+                'return_type' => $challenge->return_type,
             ]
         ]);
         $first = $r->getBody()->getContents()[0];
