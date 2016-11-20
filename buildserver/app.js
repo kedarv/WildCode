@@ -21,11 +21,18 @@ app.post('/', function (req, res) {
     var main = "\npublic static void main(String args[]) {\n";
     var expected_out = "";
     var testcases = req.body.testcase;
+    var method = req.body.proto.substr(0, req.body.proto.indexOf('('));
     testcases = testcases.split("#");
     testcases.forEach(function(test) {
         if(test.length != 0) {
             var split = test.split("^");
-            main += "System.out.println(reverse(\""+ split[0] +"\"));";
+            var args = split[0].split(",");
+            var innerargsString = "";
+            args.forEach(function(innerarg) {
+                innerargsString += '"' + innerarg +'",';
+            });
+            innerargsString = innerargsString.slice(0, -1);
+            main += "System.out.println("+method+"("+innerargsString+"));";
             expected_out += split[1] + "\n";
         }
     });
@@ -37,8 +44,10 @@ app.post('/', function (req, res) {
 		}
 		exec('javac Practice.java', options, function(err,stdout,stderr) {
   			if (err) {
+                console.log(stderr);
                 console.log('Child process exited with error code', err.code);
-    			return
+    			res.send("*" + stderr);
+                return;
   			}
             var timer = new Stopwatch();
             timer.start();
@@ -50,9 +59,8 @@ app.post('/', function (req, res) {
                 if(stdout === expected_out) {
                     res.send("ok");
                 } else {
-                // console.log(stdout);
-                // console.log(expected);
-                res.send(stdout);
+                var response = "<b>Your output:</b><br/>" + stdout + "<br/><b>Expected:</b><br/>" + expected_out;
+                res.send(response);
                 }
             });
         });

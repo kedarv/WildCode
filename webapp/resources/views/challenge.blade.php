@@ -32,12 +32,12 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalTitle">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalTitle"></h4>
       </div>
       <div class="modal-body" id="body-content">
         ...
@@ -110,15 +110,22 @@
             $.ajax({
                 type: 'POST',
                 url: '{{action('HomeController@submit')}}',
-                data: {"_token": "{{ csrf_token() }}", 'testcase' : '{{$challenge->tests}}', 'code' : editor.getValue()},
+                data: {"_token": "{{ csrf_token() }}", 'challenge' : '{{$challenge->id}}', 'code' : editor.getValue()},
                 dataType: 'json',
                 success: function(data) {
-                    if(data['message'] == 'success') {
-                        $("#body-content").html(data['output']);
-                         $('#myModal').modal({
-  keyboard: false
-})
-                    }
+                  if(data['message'] == 'fail') {
+                    $("#body-content").html(data['output']);
+                    $("#myModalTitle").html("Failed");
+                  } else if (data['message'] == 'compilefail') {
+                    $("#body-content").html("<pre>" + data['output'].substring(1) + "</pre>");
+                    $("#myModalTitle").html("Compile failed");
+                  } else if(data['message'] == 'success') {
+                    $("#myModalTitle").html("Success");
+                    $("#body-content").html("Successfully passed.");
+                  }
+                  $('#myModal').modal({
+                    keyboard: false
+                  })
                 }
             });
             event.preventDefault();

@@ -35,15 +35,25 @@ class HomeController extends Controller
     }
     public function submit(Request $request) {
         $client = new Client;
-        // echo $request->code;
+        $challenge = Challenge::where('id', $request->challenge)->first();
+      
         $r = $client->request('POST', 'http://127.0.0.1:3000', [
             'form_params' => [
                 'code' => $request->code,
-                'testcase' => $request->testcase
+                'testcase' => $challenge->tests,
+                'proto' => $challenge->prototype
             ]
         ]);
-        // echo $r->getBody();
-        return ['message' => 'success', 'output' => (String) $r->getBody()];
+        $first = $r->getBody()->getContents()[0];
+        if($r->getBody()== "ok") {
+            $message = "success";
+        } elseif($first == "*") {
+            $message = "compilefail";
+        }
+        else {
+            $message = "fail";
+        }
+        return ['message' => $message, 'output' => (string) $r->getBody()];
     }
     public function create() {
         return view('create');
