@@ -23,12 +23,12 @@
     </div>
         <div class="col-md-9">
         
-        <pre id="editor">public static String {{$challenge->prototype}} {
+        <pre id="editor">public static {{$challenge->return_type}} {{$challenge->prototype}} {
 // Your code here
 }</pre>
          
         <hr/>
-        <button class="btn btn-primary" id="submit">Submit &raquo;</button>
+        <button class="btn btn-primary" id="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Compiling">Submit &raquo;</button>
         </div>
     </div>
 </div>
@@ -107,12 +107,15 @@
 
     $(function() {
         $("#submit").click(function(){ 
+          var $this = $(this);
+          $this.button('loading');
             $.ajax({
                 type: 'POST',
                 url: '{{action('HomeController@submit')}}',
                 data: {"_token": "{{ csrf_token() }}", 'challenge' : '{{$challenge->id}}', 'code' : editor.getValue()},
                 dataType: 'json',
                 success: function(data) {
+                  $this.button('reset');
                   if(data['message'] == 'fail') {
                     $("#body-content").html(data['output']);
                     $("#myModalTitle").html("Failed");

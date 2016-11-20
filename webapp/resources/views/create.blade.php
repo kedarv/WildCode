@@ -28,8 +28,12 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="prototype">Function prototype</label>
+            <label for="prototype">Function Signature</label>
             <input type="text" name="prototype" class="form-control" id="prototype" placeholder="concat(String text, String text2)">
+          </div>
+          <div class="form-group">
+            <label for="return_type">Function Return Type</label>
+            <input type="text" name="return_type" class="form-control" id="return_type" placeholder="String">
           </div>
           <hr/>
           <h4>Test Cases</h4>

@@ -69,6 +69,7 @@ class HomeController extends Controller
             'description' => 'required',
             'instructions' => 'required',
             'difficulty' => 'required|integer|between:1,3',
+            'return_type' => 'required',
         ]);
         if ($validator->fails()) {
             return $validator->errors()->all();
@@ -86,6 +87,7 @@ class HomeController extends Controller
         $challenge->difficulty = $request->difficulty;
         $challenge->instructions = $request->instructions;
         $challenge->prototype = $request->prototype;
+        $challenge->return_type = $request->return_type;
         $challenge->save();
         return ["message" => "success"];
     }

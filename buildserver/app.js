@@ -29,7 +29,7 @@ app.post('/', function (req, res) {
             var args = split[0].split(",");
             var innerargsString = "";
             args.forEach(function(innerarg) {
-                innerargsString += '"' + innerarg +'",';
+                innerargsString += innerarg +',';
             });
             innerargsString = innerargsString.slice(0, -1);
             main += "System.out.println("+method+"("+innerargsString+"));";
