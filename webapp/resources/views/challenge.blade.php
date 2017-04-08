@@ -26,6 +26,7 @@
         <span id="saved"></span>
         <hr/>
         <button class="btn btn-primary" id="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Compiling">Submit &raquo;</button>
+        <br/>
         </div>
     </div>
 </div>

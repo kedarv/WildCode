@@ -20,3 +20,6 @@ Route::get('/view', 'HomeController@view');
 Route::post('/submitCreate', 'HomeController@submitCreate');
 Route::post('/commitCode', 'HomeController@commitCode');
 Route::get('/challenge/solution/{id}', 'HomeController@challengeSolution');
+Route::get('/home', function () {
+        return redirect('/view');
+});
